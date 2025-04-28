@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>南山假日銷過報名系統</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet"/>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>南山假日銷過報名系統</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet"/>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
         body {
             background-color: #f8f9fa;
             padding-top: 20px;
@@ -117,291 +118,247 @@
 <body>
 <div class="container">
 
-    <ul class="nav nav-tabs mb-4 sticky-top bg-white pt-3" id="mainTabs">
-        <li class="nav-item">
-            <button class="nav-link active" data-target="#tabStudent">報名表單</button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" data-target="#tabAdmin" onclick="showLoginModal(); return false;">管理員</button>
-        </li>
+<ul class="nav nav-tabs mb-4 sticky-top bg-white pt-3" id="mainTabs">
+<li class="nav-item">
+<button class="nav-link active" data-target="#tabStudent">報名表單</button>
+</li>
+<li class="nav-item">
+<button class="nav-link" data-target="#tabAdmin" onclick="showLoginModal(); return false;">管理員</button>
+</li>
 
-        <li class="nav-item ms-auto" id="logoutTab" style="display: none;">
-            <button class="nav-link text-danger" onclick="logout()">登出</button>
-        </li>
-    </ul>
-
-    <div class="header text-center">
-        <h1>南山假日銷過報名系統</h1>
-    </div>
-
-    <div class="tab-main" id="tabStudent">
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">報名表單</h5>
-            </div>
-            <div class="card-body">
-                <form id="registrationForm">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label" for="studentId">學號</label>
-                            <input class="form-control" id="studentId" placeholder="請輸入學號" required="" type="text"/>
-                            <div class="mt-2" id="studentInfo"></div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label" for="activityDate">實施日期</label>
-                            <select class="form-select" id="activityDate" required="">
-                                <option value="">請選擇日期</option>
-                            </select>
-                            <div class="mt-2 text-muted" id="dateInfo"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="activityHours">實施時數</label>
-                            <select class="form-select" id="activityHours" required="">
-                                <option value="">請選擇時數</option>
-                                <option value="2">2小時</option>
-                                <option value="4">4小時</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label" for="activityType">類別</label>
-                            <select class="form-select" id="activityType" required="">
-                                <option value="">請選擇類別</option>
-                                <option value="銷過">銷過</option>
-                                <option value="假日生活輔導">假日生活輔導</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" id="previewBtn" type="button">
-                            <i class="bi bi-eye-fill"></i> 預覽
+<li class="nav-item ms-auto" id="logoutTab" style="display: none;">
+<button class="nav-link text-danger" onclick="logout()">登出</button>
+</li>
+</ul>
+<div class="header text-center">
+<h1>南山假日銷過報名系統</h1>
+</div>
+<div class="tab-main" id="tabStudent"><div class="card mb-4">
+<div class="card-header bg-primary text-white">
+<h5 class="mb-0">報名表單</h5>
+</div>
+<div class="card-body">
+<form id="registrationForm">
+<div class="row mb-3">
+<div class="col-md-6">
+<label class="form-label" for="studentId">學號</label>
+<input class="form-control" id="studentId" placeholder="請輸入學號" required="" type="text"/>
+<div class="mt-2" id="studentInfo"></div>
+</div>
+</div>
+<div class="row mb-3">
+<div class="col-md-6">
+<label class="form-label" for="activityDate">實施日期</label>
+<select class="form-select" id="activityDate" required="">
+<option value="">請選擇日期</option>
+</select>
+<div class="mt-2 text-muted" id="dateInfo"></div>
+</div>
+<div class="col-md-6">
+<label class="form-label" for="activityHours">實施時數</label>
+<select class="form-select" id="activityHours" required="">
+<option value="">請選擇時數</option>
+<option value="2">2小時</option>
+<option value="4">4小時</option>
+</select>
+</div>
+</div>
+<div class="row mb-4">
+<div class="col-md-6">
+<label class="form-label" for="activityType">類別</label>
+<select class="form-select" id="activityType" required="">
+<option value="">請選擇類別</option>
+<option value="銷過">銷過</option>
+<option value="假日生活輔導">假日生活輔導</option>
+</select>
+</div>
+</div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+<button class="btn btn-primary me-md-2" id="previewBtn" type="button">
+<i class="bi bi-eye-fill"></i> 預覽
                         </button>
-                        <button class="btn btn-secondary" type="reset">清除</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="card" id="previewSection" style="display: none;">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0">報名預覽</h5>
-            </div>
-            <div class="card-body">
-                <div id="previewContent"></div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                    <button class="btn btn-success me-md-2" id="confirmBtn" type="button">
-                        <i class="bi bi-check-circle-fill"></i> 確認提交
-                    </button>
-                    <button class="btn btn-warning me-md-2" id="editBtn" type="button">
-                        <i class="bi bi-pencil-fill"></i> 修改資料
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 管理員查詢區塊 -->
-    <div class="tab-main" id="tabAdmin" style="display: none;">
-        <div class="card mb-4">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">管理實施日期</h5>
-            </div>
-            <div class="card-body">
-                <div class="input-group mb-3">
-                    <input class="form-control" id="newDateInput" type="date"/>
-                    <button class="btn btn-success" id="addDateBtn">
-                        <i class="bi bi-plus-circle"></i> 新增日期
-                    </button>
-                </div>
-                <ul class="list-group" id="dateList"></ul>
-            </div>
-        </div>
-
-        <div class="admin-section">
-            <div class="card mb-4">
-                <div class="card-header bg-secondary text-white">
-                    <h5 class="mb-0">管理員查詢</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label class="form-label" for="queryStudentId">學號</label>
-                            <input class="form-control" id="queryStudentId" placeholder="可選填學號" type="text"/>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label" for="queryDate">查詢日期</label>
-                            <select class="form-select" id="queryDate">
-                                <option value="">請選擇查詢日期</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end">
-                            <button class="btn btn-primary" id="queryBtn" type="button">
-                                <i class="bi bi-search"></i> 查詢
-                            </button>
-                            <button class="btn btn-success ms-2" id="printListBtn" style="display: none;" type="button">
-                                <i class="bi bi-printer-fill"></i> 列印名單
-                            </button>
-                        </div>
-                    </div>
-                    <div id="queryResults"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 隱藏的列印名單內容 -->
-    <div id="printListContent" style="display: none;">
-        <div class="text-center mb-4">
-            <h2>南山中學假日銷過報名名單</h2>
-            <h4 id="printListDate"></h4>
-            <p class="text-muted">列印時間: <span id="printListTime"></span></p>
-        </div>
-        <table class="table table-bordered" id="printListTable">
-            <thead class="table-dark">
-                <tr>
-                    <th>序號</th>
-                    <th>學號</th>
-                    <th>姓名</th>
-                    <th>班級</th>
-                    <th>時數</th>
-                    <th>類別</th>
-                    <th>報名時間</th>
-                </tr>
-            </thead>
-            <tbody id="printListBody"></tbody>
-        </table>
-        <div class="text-end mt-4">
-            <p>總人數: <span id="printTotalCount">0</span>人</p>
-        </div>
-    </div>
-
-    <div class="footer">
-        <p>南山中學 校安中心 © 2025</p>
-    </div>
+<button class="btn btn-secondary" type="reset">清除</button>
 </div>
-
-<!-- 登入模態框 -->
-<div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="loginModalLabel">管理員登入</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label" for="adminUsername">帳號</label>
-                    <input class="form-control" id="adminUsername" placeholder="輸入管理員帳號" type="text"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="adminPassword">密碼</label>
-                    <input class="form-control" id="adminPassword" placeholder="輸入密碼" type="password"/>
-                </div>
-                <div class="text-danger" id="loginError" style="display: none;">帳號或密碼錯誤</div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">取消</button>
-                <button class="btn btn-primary" onclick="validateLogin()" type="button">登入</button>
-            </div>
-        </div>
-    </div>
+</form>
 </div>
+</div><div class="card" id="previewSection" style="display: none;">
+<div class="card-header bg-success text-white">
+<h5 class="mb-0">報名預覽</h5>
+</div>
+<div class="card-body">
+<div id="previewContent"></div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+<button class="btn btn-success me-md-2" id="confirmBtn" type="button">
+<i class="bi bi-check-circle-fill"></i> 確認提交
+                    </button>
+<button class="btn btn-warning me-md-2" id="editBtn" type="button">
+<i class="bi bi-pencil-fill"></i> 修改資料
+                    </button>
+</div>
+</div>
+</div></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- 管理員查詢區塊 -->
 
+<!-- 隱藏的列印名單內容 -->
+<div id="printListContent" style="display: none;">
+<div class="text-center mb-4">
+<h2>南山中學假日銷過報名名單</h2>
+<h4 id="printListDate"></h4>
+<p class="text-muted">列印時間: <span id="printListTime"></span></p>
+</div>
+<table class="table table-bordered" id="printListTable">
+<thead class="table-dark">
+<tr>
+<th>序號</th>
+<th>學號</th>
+<th>姓名</th>
+<th>班級</th>
+<th>時數</th>
+<th>類別</th>
+<th>報名時間</th>
+</tr>
+</thead>
+<tbody id="printListBody"></tbody>
+</table>
+<div class="text-end mt-4">
+<p>總人數: <span id="printTotalCount">0</span>人</p>
+</div>
+</div>
+<div class="footer">
+<p>南山中學 校安中心 © 2025</p>
+</div>
+<div class="tab-main" id="tabAdmin" style="display: none;">
+<div class="card mb-4">
+<div class="card-header bg-info text-white">
+<h5 class="mb-0">管理實施日期</h5>
+</div>
+<div class="card-body">
+<div class="input-group mb-3">
+<input class="form-control" id="newDateInput" type="date"/>
+<button class="btn btn-success" id="addDateBtn">
+<i class="bi bi-plus-circle"></i> 新增日期
+            </button>
+</div>
+<ul class="list-group" id="dateList"></ul>
+</div>
+</div>
+<div class="admin-section">
+<div class="card mb-4">
+<div class="card-header bg-secondary text-white">
+<h5 class="mb-0">管理員查詢</h5>
+</div>
+<div class="card-body">
+<div class="row mb-3">
+<div class="col-md-4">
+<label class="form-label" for="queryStudentId">學號</label>
+<input class="form-control" id="queryStudentId" placeholder="可選填學號" type="text"/>
+</div>
+<div class="col-md-4">
+<label class="form-label" for="queryDate">查詢日期</label>
+<select class="form-select" id="queryDate">
+<option value="">請選擇查詢日期</option>
+</select>
+</div>
+<div class="col-md-4 d-flex align-items-end">
+<button class="btn btn-primary" id="queryBtn" type="button">
+<i class="bi bi-search"></i> 查詢
+                            </button>
+<button class="btn btn-success ms-2" id="printListBtn" style="display: none;" type="button">
+<i class="bi bi-printer-fill"></i> 列印名單
+                            </button>
+</div>
+</div>
+<div id="queryResults"></div>
+</div>
+</div>
+</div></div></div>
 <script>
-    // 初始化 Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyAMlgRs8a0-eZSamx1-EF3y2obIAOLvaZI",
-        authDomain: "nanshan-student.firebaseapp.com",
-        databaseURL: "https://nanshan-student-default-rtdb.firebascio.com",
-        projectId: "nanshan-student",
-        storageBucket: "nanshan-student.firebasestorage.app",
-        messagingSenderId: "879754099667",
-        appId: "1:879754099667:web:0c08805c2d918b8b41e4d26",
-        measurementId: "G-KTX7TH9ETW"
-    };
+        // 初始化 Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMlgRs8a0-eZSamx1-EF3y2obIAOLvaZI",
+            authDomain: "nanshan-student.firebaseapp.com",
+            databaseURL: "https://nanshan-student-default-rtdb.firebascio.com",
+            projectId: "nanshan-student",
+            storageBucket: "nanshan-student.firebasestorage.app",
+            messagingSenderId: "879754099667",
+            appId: "1:879754099667:web:0c08805c2d918b8b41e4d26",
+            measurementId: "G-KTX7TH9ETW"
+        };
 
-    // 初始化 Firebase
-    let db;
-    try {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-        
-        // 測試連線
-        db.collection('測試連線').doc('test').get()
-            .catch(error => {
-                console.error("Firestore 連線測試失敗:", error);
-                showConnectionError();
-            });
-    } catch (error) {
-        console.error("Firebase 初始化錯誤:", error);
-        showConnectionError();
-    }
-
-    // 定義日期集合名稱
-    const DATE_COLLECTION = "activity_dates";
-
-    function showConnectionError() {
-        const errorAlert = document.createElement('div');
-        errorAlert.className = 'alert alert-danger';
-        errorAlert.innerHTML = `
-            <strong>資料庫連線錯誤</strong> 
-            <div class="error-details">無法連接到資料庫服務，請檢查網路連線或聯繫管理員。</div>
-        `;
-        document.querySelector('.container').prepend(errorAlert);
-    }
-
-    // DOM 元素
-    const elements = {
-        studentIdInput: document.getElementById('studentId'),
-        studentInfoDiv: document.getElementById('studentInfo'),
-        activityDateSelect: document.getElementById('activityDate'),
-        dateInfoDiv: document.getElementById('dateInfo'),
-        previewSection: document.getElementById('previewSection'),
-        previewContent: document.getElementById('previewContent'),
-        previewBtn: document.getElementById('previewBtn'),
-        confirmBtn: document.getElementById('confirmBtn'),
-        editBtn: document.getElementById('editBtn'),
-        queryStudentId: document.getElementById('queryStudentId'),
-        queryDate: document.getElementById('queryDate'),
-        queryBtn: document.getElementById('queryBtn'),
-        queryResults: document.getElementById('queryResults'),
-        printListBtn: document.getElementById('printListBtn'),
-        printListContent: document.getElementById('printListContent'),
-        printListDate: document.getElementById('printListDate'),
-        printListTime: document.getElementById('printListTime'),
-        printListBody: document.getElementById('printListBody'),
-        printTotalCount: document.getElementById('printTotalCount'),
-        newDateInput: document.getElementById('newDateInput'),
-        addDateBtn: document.getElementById('addDateBtn'),
-        dateList: document.getElementById('dateList')
-    };
-
-    // 當前學生資料和查詢結果
-    let currentStudent = null;
-    let registrationData = null;
-    let queryResultData = [];
-
-    // 初始化日期選項 - 從 Firebase 讀取
-    async function initDateOptions() {
+        // 初始化 Firebase
+        let db;
         try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            
+            // 測試連線
+            db.collection('測試連線').doc('test').get()
+                .catch(error => {
+                    console.error("Firestore 連線測試失敗:", error);
+                    showConnectionError();
+                });
+        } catch (error) {
+            console.error("Firebase 初始化錯誤:", error);
+            showConnectionError();
+        }
+
+        function showConnectionError() {
+            const errorAlert = document.createElement('div');
+            errorAlert.className = 'alert alert-danger';
+            errorAlert.innerHTML = `
+                <strong>資料庫連線錯誤</strong> 
+                <div class="error-details">無法連接到資料庫服務，請檢查網路連線或聯繫管理員。</div>
+            `;
+            document.querySelector('.container').prepend(errorAlert);
+        }
+
+        // 定義可報名的日期
+        let availableDates = [
+            '2025-05-04',
+            '2025-05-18',
+            '2025-05-25',
+            '2025-06-08',
+            '2025-06-15',
+        ];
+
+        // DOM 元素
+        const elements = {
+            studentIdInput: document.getElementById('studentId'),
+            studentInfoDiv: document.getElementById('studentInfo'),
+            activityDateSelect: document.getElementById('activityDate'),
+            dateInfoDiv: document.getElementById('dateInfo'),
+            previewSection: document.getElementById('previewSection'),
+            previewContent: document.getElementById('previewContent'),
+            previewBtn: document.getElementById('previewBtn'),
+            confirmBtn: document.getElementById('confirmBtn'),
+            editBtn: document.getElementById('editBtn'),
+            queryStudentId: document.getElementById('queryStudentId'),
+            queryDate: document.getElementById('queryDate'),
+            queryBtn: document.getElementById('queryBtn'),
+            queryResults: document.getElementById('queryResults'),
+            printListBtn: document.getElementById('printListBtn'),
+            printListContent: document.getElementById('printListContent'),
+            printListDate: document.getElementById('printListDate'),
+            printListTime: document.getElementById('printListTime'),
+            printListBody: document.getElementById('printListBody'),
+            printTotalCount: document.getElementById('printTotalCount'),
+            newDateInput: document.getElementById('newDateInput'),
+            addDateBtn: document.getElementById('addDateBtn'),
+            dateList: document.getElementById('dateList')
+        };
+
+        // 當前學生資料和查詢結果
+        let currentStudent = null;
+        let registrationData = null;
+        let queryResultData = [];
+
+        // 初始化日期選項
+        function initDateOptions() {
             elements.activityDateSelect.innerHTML = '<option value="">請選擇日期</option>';
             elements.queryDate.innerHTML = '<option value="">請選擇查詢日期</option>';
             
-            const snapshot = await db.collection(DATE_COLLECTION).orderBy("date").get();
-            
-            if (snapshot.empty) {
-                console.log("沒有找到任何實施日期");
-                return;
-            }
-            
-            snapshot.forEach(doc => {
-                const date = doc.data().date;
-                
+            availableDates.forEach(date => {
                 const option1 = document.createElement('option');
                 option1.value = date;
                 option1.textContent = date;
@@ -412,469 +369,236 @@
                 option2.textContent = date;
                 elements.queryDate.appendChild(option2);
             });
-        } catch (error) {
-            console.error("初始化日期選項錯誤:", error);
-            alert("無法載入實施日期，請稍後再試");
         }
-    }
 
-    // 刷新日期列表 (管理員用)
-    async function refreshDateList() {
-        try {
-            elements.dateList.innerHTML = '<li class="list-group-item text-muted">載入中...</li>';
-            
-            const snapshot = await db.collection(DATE_COLLECTION).orderBy("date").get();
-            
-            elements.dateList.innerHTML = '';
-            
-            if (snapshot.empty) {
-                elements.dateList.innerHTML = '<li class="list-group-item text-muted">沒有可用的實施日期</li>';
-                return;
-            }
-            
-            snapshot.forEach(doc => {
+        // 檢查學號是否存在
+        async function checkStudentId(studentId) {
+            try {
+                elements.studentInfoDiv.innerHTML = '<div class="text-muted"><span class="loading-spinner"></span> 查詢中...</div>';
+                
+                const docRef = db.collection('南山學生資料').doc(studentId);
+                const doc = await docRef.get();
+                
+                if (!doc.exists) {
+                    elements.studentInfoDiv.innerHTML = '<div class="alert alert-danger">找不到此學號的學生資料</div>';
+                    currentStudent = null;
+                    return false;
+                }
+                
                 const data = doc.data();
-                const li = document.createElement('li');
-                li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                li.innerHTML = `
-                    <span>${data.date}</span>
-                    <button class="btn btn-sm btn-danger" data-id="${doc.id}">
-                        <i class="bi bi-trash"></i>
-                    </button>
+                currentStudent = {
+                    id: studentId,
+                    name: data['姓名'] || '未提供',
+                    grade: data['年級'] || '未提供',
+                    class: data['班級'] || '未提供'
+                };
+                
+                elements.studentInfoDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>姓名:</strong> ${currentStudent.name}<br>
+                        <strong>班級:</strong> ${currentStudent.grade}${currentStudent.class}
+                    </div>
                 `;
-                elements.dateList.appendChild(li);
-            });
-        } catch (error) {
-            console.error("刷新日期列表錯誤:", error);
-            elements.dateList.innerHTML = '<li class="list-group-item text-danger">載入失敗</li>';
-        }
-    }
-
-    // 新增日期 (管理員用)
-    async function addNewDate() {
-        const newDate = elements.newDateInput.value;
-        if (!newDate) {
-            alert('請選擇有效的日期');
-            return;
-        }
-        
-        try {
-            // 檢查日期是否已存在
-            const querySnapshot = await db.collection(DATE_COLLECTION)
-                .where("date", "==", newDate)
-                .get();
-            
-            if (!querySnapshot.empty) {
-                alert('此日期已存在');
-                return;
-            }
-            
-            // 新增日期到 Firebase
-            await db.collection(DATE_COLLECTION).add({
-                date: newDate,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
-            alert('日期新增成功');
-            elements.newDateInput.value = '';
-            await refreshDateList();
-            await initDateOptions(); // 重新初始化日期選項
-        } catch (error) {
-            console.error("新增日期錯誤:", error);
-            alert('新增日期失敗，請稍後再試');
-        }
-    }
-
-    // 刪除日期 (管理員用)
-    async function deleteDate(docId, dateToDelete) {
-        if (!confirm(`確定要刪除「${dateToDelete}」這個日期嗎？此操作無法復原！`)) {
-            return;
-        }
-        
-        try {
-            // 檢查是否有報名記錄
-            const regSnapshot = await db.collection('報名記錄')
-                .where('實施日期', '==', dateToDelete)
-                .get();
-            
-            if (!regSnapshot.empty) {
-                alert('此日期已有報名記錄，無法刪除');
-                return;
-            }
-            
-            // 刪除日期
-            await db.collection(DATE_COLLECTION).doc(docId).delete();
-            
-            alert('日期刪除成功');
-            await refreshDateList();
-            await initDateOptions(); // 重新初始化日期選項
-        } catch (error) {
-            console.error("刪除日期錯誤:", error);
-            alert('刪除日期失敗，請稍後再試');
-        }
-    }
-
-    // 檢查學號是否存在
-    async function checkStudentId(studentId) {
-        try {
-            elements.studentInfoDiv.innerHTML = '<div class="text-muted"><span class="loading-spinner"></span> 查詢中...</div>';
-            
-            const docRef = db.collection('南山學生資料').doc(studentId);
-            const doc = await docRef.get();
-            
-            if (!doc.exists) {
-                elements.studentInfoDiv.innerHTML = '<div class="alert alert-danger">找不到此學號的學生資料</div>';
-                currentStudent = null;
+                
+                return true;
+            } catch (error) {
+                console.error("查詢學生資料錯誤:", error);
+                let errorMessage = '查詢學生資料時發生錯誤';
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage = '權限不足，無法查詢學生資料';
+                }
+                
+                elements.studentInfoDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        ${errorMessage}
+                        <div class="error-details">錯誤代碼: ${error.code || '未知'}</div>
+                    </div>
+                `;
                 return false;
             }
-            
-            const data = doc.data();
-            currentStudent = {
-                id: studentId,
-                name: data['姓名'] || '未提供',
-                grade: data['年級'] || '未提供',
-                class: data['班級'] || '未提供'
-            };
-            
-            elements.studentInfoDiv.innerHTML = `
-                <div class="alert alert-success">
-                    <strong>姓名:</strong> ${currentStudent.name}<br>
-                    <strong>班級:</strong> ${currentStudent.grade}${currentStudent.class}
-                </div>
-            `;
-            
-            return true;
-        } catch (error) {
-            console.error("查詢學生資料錯誤:", error);
-            let errorMessage = '查詢學生資料時發生錯誤';
-            
-            if (error.code === 'permission-denied') {
-                errorMessage = '權限不足，無法查詢學生資料';
-            }
-            
-            elements.studentInfoDiv.innerHTML = `
-                <div class="alert alert-danger">
-                    ${errorMessage}
-                    <div class="error-details">錯誤代碼: ${error.code || '未知'}</div>
-                </div>
-            `;
-            return false;
         }
-    }
 
-    // 檢查學生是否已在同一天報名
-    async function checkDuplicateRegistration(studentId, date) {
-        try {
-            const snapshot = await db.collection('報名記錄')
-                .where('學號', '==', studentId)
-                .where('實施日期', '==', date)
-                .get();
-            
-            if (!snapshot.empty) {
-                return true; // 已報名過
-            }
-            return false; // 未報名過
-        } catch (error) {
-            console.error("檢查重複報名錯誤:", error);
-            return false;
-        }
-    }
-
-    // 檢查日期報名人數
-    async function checkDateAvailability(date) {
-        try {
-            const snapshot = await db.collection('報名記錄')
-                .where('實施日期', '==', date)
-                .get();
-            
-            const count = snapshot.size;
-            const remaining = 50 - count;
-            
-            elements.dateInfoDiv.textContent = `已報名: ${count}人 / 剩餘名額: ${remaining}人`;
-            
-            if (count >= 50) {
-                elements.dateInfoDiv.innerHTML += '<br><span class="text-danger">此日期已額滿，請選擇其他日期</span>';
+        // 檢查學生是否已在同一天報名
+        async function checkDuplicateRegistration(studentId, date) {
+            try {
+                const snapshot = await db.collection('報名記錄')
+                    .where('學號', '==', studentId)
+                    .where('實施日期', '==', date)
+                    .get();
+                
+                if (!snapshot.empty) {
+                    return true; // 已報名過
+                }
+                return false; // 未報名過
+            } catch (error) {
+                console.error("檢查重複報名錯誤:", error);
                 return false;
             }
-            
-            return true;
-        } catch (error) {
-            console.error("檢查日期可用性錯誤:", error);
-            elements.dateInfoDiv.innerHTML = `
-                <div class="text-danger">
-                    無法取得報名資料
-                    <div class="error-details">${error.message || '未知錯誤'}</div>
-                </div>
-            `;
-            return false;
         }
-    }
 
-    // 查詢特定日期的報名記錄
-    async function queryRegistrations(date, studentId = '') {
-        try {
-            elements.queryResults.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> 查詢中...</div>';
-            elements.printListBtn.style.display = 'none';
-
-            let formattedDate = '';
-            if (date && !isNaN(new Date(date))) {
-                formattedDate = new Date(date).toISOString().split('T')[0];
-            } else if (date) {
-                throw new RangeError("Invalid time value");
+        // 檢查日期報名人數
+        async function checkDateAvailability(date) {
+            try {
+                const snapshot = await db.collection('報名記錄')
+                    .where('實施日期', '==', date)
+                    .get();
+                
+                const count = snapshot.size;
+                const remaining = 50 - count;
+                
+                elements.dateInfoDiv.textContent = `已報名: ${count}人 / 剩餘名額: ${remaining}人`;
+                
+                if (count >= 50) {
+                    elements.dateInfoDiv.innerHTML += '<br><span class="text-danger">此日期已額滿，請選擇其他日期</span>';
+                    return false;
+                }
+                
+                return true;
+            } catch (error) {
+                console.error("檢查日期可用性錯誤:", error);
+                elements.dateInfoDiv.innerHTML = `
+                    <div class="text-danger">
+                        無法取得報名資料
+                        <div class="error-details">${error.message || '未知錯誤'}</div>
+                    </div>
+                `;
+                return false;
             }
+        }
 
-            let query = db.collection('報名記錄').orderBy('報名時間');
+        // 查詢特定日期的報名記錄
+        async function queryRegistrations(date, studentId = '') {
+            try {
+                elements.queryResults.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> 查詢中...</div>';
+                elements.printListBtn.style.display = 'none';
 
-            // 如果有指定日期，添加日期條件
-            if (formattedDate) {
-                query = query.where('實施日期', '==', formattedDate);
-            }
+                let formattedDate = '';
+                if (date && !isNaN(new Date(date))) {
+                    formattedDate = new Date(date).toISOString().split('T')[0];
+                } else if (date) {
+                    throw new RangeError("Invalid time value");
+                }
 
-            // 如果有指定學號，添加學號條件
-            if (studentId) {
-                query = query.where('學號', '==', studentId);
-            }
+                let query = db.collection('報名記錄').orderBy('報名時間');
 
-            const snapshot = await query.get();
+                // 如果有指定日期，添加日期條件
+                if (formattedDate) {
+                    query = query.where('實施日期', '==', formattedDate);
+                }
 
-            if (snapshot.empty) {
-                elements.queryResults.innerHTML = '<div class="alert alert-info">沒有找到符合條件的報名記錄</div>';
+                // 如果有指定學號，添加學號條件
+                if (studentId) {
+                    query = query.where('學號', '==', studentId);
+                }
+
+                const snapshot = await query.get();
+
+                if (snapshot.empty) {
+                    elements.queryResults.innerHTML = '<div class="alert alert-info">沒有找到符合條件的報名記錄</div>';
+                    queryResultData = [];
+                    return;
+                }
+
                 queryResultData = [];
-                return;
-            }
+                let html = `
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>序號</th>
+                                    <th>學號</th>
+                                    <th>姓名</th>
+                                    <th>班級</th>
+                                    <th>實施日期</th>
+                                    <th>時數</th>
+                                    <th>類別</th>
+                                    <th>報名時間</th><th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
 
-            queryResultData = [];
-            let html = `
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>序號</th>
-                                <th>學號</th>
-                                <th>姓名</th>
-                                <th>班級</th>
-                                <th>實施日期</th>
-                                <th>時數</th>
-                                <th>類別</th>
-                                <th>報名時間</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
+                let index = 1;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const registrationTime = data.報名時間 && data.報名時間.seconds ?
+                        new Date(data.報名時間.seconds * 1000).toLocaleString('zh-TW') :
+                        '未記錄';
 
-            let index = 1;
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const registrationTime = data.報名時間 && data.報名時間.seconds ?
-                    new Date(data.報名時間.seconds * 1000).toLocaleString('zh-TW') :
-                    '未記錄';
+                    queryResultData.push({
+                        id: data.學號 || '未提供',
+                        name: data.姓名 || '未提供',
+                        class: data.班級 || '未提供',
+                        date: data.實施日期 || '未提供',
+                        hours: data.實施時數 || '未提供',
+                        type: data.類別 || '未提供',
+                        time: registrationTime
+                    });
 
-                queryResultData.push({
-                    id: data.學號 || '未提供',
-                    name: data.姓名 || '未提供',
-                    class: data.班級 || '未提供',
-                    date: data.實施日期 || '未提供',
-                    hours: data.實施時數 || '未提供',
-                    type: data.類別 || '未提供',
-                    time: registrationTime
+                    html += `
+                        <tr>
+                            <td>${index}</td>
+                            <td>${data.學號 || '未提供'}</td>
+                            <td>${data.姓名 || '未提供'}</td>
+                            <td>${data.班級 || '未提供'}</td>
+                            <td>${data.實施日期 || '未提供'}</td>
+                            <td>${data.實施時數 || '0'}小時</td>
+                            <td>${data.類別 || '未指定'}</td>
+                            <td>${registrationTime}</td>
+                            <td><button class="btn btn-sm btn-danger" onclick="deleteRegistration('${doc.id}')">刪除</button></td>
+                        </tr>
+                    `;
+                    index++;
                 });
 
                 html += `
-                    <tr>
-                        <td>${index}</td>
-                        <td>${data.學號 || '未提供'}</td>
-                        <td>${data.姓名 || '未提供'}</td>
-                        <td>${data.班級 || '未提供'}</td>
-                        <td>${data.實施日期 || '未提供'}</td>
-                        <td>${data.實施時數 || '0'}小時</td>
-                        <td>${data.類別 || '未指定'}</td>
-                        <td>${registrationTime}</td>
-                        <td><button class="btn btn-sm btn-danger" onclick="deleteRegistration('${doc.id}')">刪除</button></td>
-                    </tr>
-                `;
-                index++;
-            });
-
-            html += `
                         </tbody>
                     </table>
                     <div class="alert alert-info mt-3">
                         共找到 ${snapshot.size} 筆報名記錄
                     </div>
                 </div>
-            `;
+                `;
 
-            elements.queryResults.innerHTML = html;
-            elements.printListBtn.style.display = 'inline-block';
+                elements.queryResults.innerHTML = html;
+                elements.printListBtn.style.display = 'inline-block';
 
-        } catch (error) {
-            console.error("查詢報名記錄錯誤:", error);
-            let errorMessage = '查詢報名記錄時發生錯誤';
+            } catch (error) {
+                console.error("查詢報名記錄錯誤:", error);
+                let errorMessage = '查詢報名記錄時發生錯誤';
 
-            if (error instanceof RangeError) {
-                errorMessage = '查詢日期格式不正確，請重新選擇';
-            } else if (error.code === 'permission-denied') {
-                errorMessage = '權限不足，無法查詢報名記錄';
-            } else if (error.code === 'invalid-argument') {
-                errorMessage = '查詢條件無效，請檢查日期格式';
+                if (error instanceof RangeError) {
+                    errorMessage = '查詢日期格式不正確，請重新選擇';
+                } else if (error.code === 'permission-denied') {
+                    errorMessage = '權限不足，無法查詢報名記錄';
+                } else if (error.code === 'invalid-argument') {
+                    errorMessage = '查詢條件無效，請檢查日期格式';
+                }
+
+                elements.queryResults.innerHTML = `
+                    <div class="alert alert-danger">
+                        ${errorMessage}
+                        <div class="error-details">錯誤訊息: ${error.message || '未知'}</div>
+                    </div>
+                `;
+                queryResultData = [];
+                elements.printListBtn.style.display = 'none';
             }
-
-            elements.queryResults.innerHTML = `
-                <div class="alert alert-danger">
-                    ${errorMessage}
-                    <div class="error-details">錯誤訊息: ${error.message || '未知'}</div>
-                </div>
-            `;
-            queryResultData = [];
-            elements.printListBtn.style.display = 'none';
         }
-    }
 
-    // 顯示預覽
-    async function showPreview() {
-        const activityDate = elements.activityDateSelect.value;
-        const activityHours = document.getElementById('activityHours').value;
-        const activityType = document.getElementById('activityType').value;
-        
-        // 檢查是否已報名過同一天
-        const isDuplicate = await checkDuplicateRegistration(currentStudent.id, activityDate);
-        if (isDuplicate) {
-            alert('您已經報名過此日期的活動，請選擇其他日期');
-            return;
-        }
-        
-        registrationData = {
-            studentId: currentStudent.id,
-            studentName: currentStudent.name,
-            studentClass: `${currentStudent.grade}${currentStudent.class}`,
-            activityDate: activityDate,
-            activityHours: activityHours,
-            activityType: activityType,
-            registrationTime: new Date().toLocaleString('zh-TW')
-        };
-        
-        elements.previewContent.innerHTML = `
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>學號:</strong> ${currentStudent.id}</p>
-                    <p><strong>姓名:</strong> ${currentStudent.name}</p>
-                    <p><strong>班級:</strong> ${currentStudent.grade}${currentStudent.class}</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>實施日期:</strong> ${activityDate}</p>
-                    <p><strong>實施時數:</strong> ${activityHours}小時</p>
-                    <p><strong>類別:</strong> ${activityType}</p>
-                </div>
-            </div>
-            <div class="alert alert-info mt-3">
-                請確認以上資料無誤後再提交，提交後將無法修改。
-            </div>
-        `;
-        
-        elements.previewSection.style.display = 'block';
-        window.scrollTo({ top: elements.previewSection.offsetTop, behavior: 'smooth' });
-    }
-
-    // 準備列印名單內容
-    function preparePrintListContent() {
-        if (queryResultData.length === 0) {
-            alert('沒有可列印的資料，請先查詢報名記錄');
-            return false;
-        }
-        
-        elements.printListDate.textContent = elements.queryDate.value || '所有日期';
-        elements.printListTime.textContent = new Date().toLocaleString('zh-TW');
-        elements.printListBody.innerHTML = '';
-        
-        queryResultData.forEach((item, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${item.id || '未提供'}</td>
-                <td>${item.name || '未提供'}</td>
-                <td>${item.class || '未提供'}</td>
-                <td>${item.hours || '0'}小時</td>
-                <td>${item.type || '未指定'}</td>
-                <td>${item.time || '未記錄'}</td>
-            `;
-            elements.printListBody.appendChild(row);
-        });
-        
-        elements.printTotalCount.textContent = queryResultData.length;
-        return true;
-    }
-
-    // 列印報名名單
-    function printRegistrationList() {
-        if (!preparePrintListContent()) return;
-        
-        // 添加列印類別到body
-        document.body.classList.add('print-list');
-        
-        // 確保內容可見
-        elements.printListContent.style.display = 'block';
-        
-        // 添加短暫延遲確保內容已渲染
-        setTimeout(() => {
-            window.print();
+        // 顯示預覽
+        async function showPreview() {
+            const activityDate = elements.activityDateSelect.value;
+            const activityHours = document.getElementById('activityHours').value;
+            const activityType = document.getElementById('activityType').value;
             
-            // 列印完成後恢復狀態
-            setTimeout(() => {
-                document.body.classList.remove('print-list');
-                elements.printListContent.style.display = 'none';
-            }, 500);
-        }, 100);
-    }
-
-    // 提交報名資料
-    async function submitRegistration() {
-        const activityDate = elements.activityDateSelect.value;
-        const activityHours = document.getElementById('activityHours').value;
-        const activityType = document.getElementById('activityType').value;
-        
-        // 檢查日期是否可用
-        const isAvailable = await checkDateAvailability(activityDate);
-        if (!isAvailable) {
-            alert('此日期已額滿，請選擇其他日期');
-            return;
-        }
-        
-        // 再次檢查是否已報名過同一天
-        const isDuplicate = await checkDuplicateRegistration(currentStudent.id, activityDate);
-        if (isDuplicate) {
-            alert('您已經報名過此日期的活動，請選擇其他日期');
-            return;
-        }
-        
-        try {
-            elements.confirmBtn.innerHTML = '<span class="loading-spinner"></span> 提交中...';
-            elements.confirmBtn.disabled = true;
-            
-            const now = new Date();
-            const registrationTime = firebase.firestore.Timestamp.fromDate(now);
-            
-            await db.collection('報名記錄').add({
-                學號: currentStudent.id,
-                班級: `${currentStudent.grade}${currentStudent.class}`,
-                姓名: currentStudent.name,
-                實施日期: activityDate,
-                實施時數: parseInt(activityHours),
-                類別: activityType,
-                報名時間: registrationTime,
-                狀態: '已報名'
-            });
-            
-            elements.confirmBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> 確認提交';
-            elements.confirmBtn.disabled = false;
-            
-            const successAlert = document.createElement('div');
-            successAlert.className = 'alert alert-success alert-dismissible fade show';
-            successAlert.innerHTML = `
-                <strong>報名成功！</strong> 您的假日銷過已成功報名。
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
-            document.querySelector('.container').prepend(successAlert);
+            // 檢查是否已報名過同一天
+            const isDuplicate = await checkDuplicateRegistration(currentStudent.id, activityDate);
+            if (isDuplicate) {
+                alert('您已經報名過此日期的活動，請選擇其他日期');
+                return;
+            }
             
             registrationData = {
                 studentId: currentStudent.id,
@@ -883,184 +607,480 @@
                 activityDate: activityDate,
                 activityHours: activityHours,
                 activityType: activityType,
-                registrationTime: now.toLocaleString('zh-TW')
+                registrationTime: new Date().toLocaleString('zh-TW')
             };
             
-            resetForm();
-        } catch (error) {
-            console.error("提交報名錯誤:", error);
-            elements.confirmBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> 確認提交';
-            elements.confirmBtn.disabled = false;
+            elements.previewContent.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>學號:</strong> ${currentStudent.id}</p>
+                        <p><strong>姓名:</strong> ${currentStudent.name}</p>
+                        <p><strong>班級:</strong> ${currentStudent.grade}${currentStudent.class}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>實施日期:</strong> ${activityDate}</p>
+                        <p><strong>實施時數:</strong> ${activityHours}小時</p>
+                        <p><strong>類別:</strong> ${activityType}</p>
+                    </div>
+                </div>
+                <div class="alert alert-info mt-3">
+                    請確認以上資料無誤後再提交，提交後將無法修改。
+                </div>
+            `;
             
-            let errorMessage = '報名失敗，請稍後再試';
-            if (error.code === 'permission-denied') {
-                errorMessage = '權限不足，無法提交報名';
+            elements.previewSection.style.display = 'block';
+            window.scrollTo({ top: elements.previewSection.offsetTop, behavior: 'smooth' });
+        }
+
+        // 準備列印名單內容
+        function preparePrintListContent() {
+            if (queryResultData.length === 0) {
+                alert('沒有可列印的資料，請先查詢報名記錄');
+                return false;
             }
             
-            alert(errorMessage);
+            elements.printListDate.textContent = elements.queryDate.value || '所有日期';
+            elements.printListTime.textContent = new Date().toLocaleString('zh-TW');
+            elements.printListBody.innerHTML = '';
+            
+            queryResultData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.id || '未提供'}</td>
+                    <td>${item.name || '未提供'}</td>
+                    <td>${item.class || '未提供'}</td>
+                    <td>${item.hours || '0'}小時</td>
+                    <td>${item.type || '未指定'}</td>
+                    <td>${item.time || '未記錄'}</td>
+                `;
+                elements.printListBody.appendChild(row);
+            });
+            
+            elements.printTotalCount.textContent = queryResultData.length;
+            return true;
         }
-    }
 
-    // 刪除報名記錄
-    async function deleteRegistration(docId) {
-        if (!confirm('確定要刪除此報名資料嗎？')) return;
-        try {
-            await db.collection('報名記錄').doc(docId).delete();
-            alert('刪除成功');
+        // 列印報名名單
+        function printRegistrationList() {
+            if (!preparePrintListContent()) return;
+            
+            // 添加列印類別到body
+            document.body.classList.add('print-list');
+            
+            // 確保內容可見
+            elements.printListContent.style.display = 'block';
+            
+            // 添加短暫延遲確保內容已渲染
+            setTimeout(() => {
+                window.print();
+                
+                // 列印完成後恢復狀態
+                setTimeout(() => {
+                    document.body.classList.remove('print-list');
+                    elements.printListContent.style.display = 'none';
+                }, 500);
+            }, 100);
+        }
+
+        // 提交報名資料
+        async function submitRegistration() {
+            const activityDate = elements.activityDateSelect.value;
+            const activityHours = document.getElementById('activityHours').value;
+            const activityType = document.getElementById('activityType').value;
+            
+            // 檢查日期是否可用
+            const isAvailable = await checkDateAvailability(activityDate);
+            if (!isAvailable) {
+                alert('此日期已額滿，請選擇其他日期');
+                return;
+            }
+            
+            // 再次檢查是否已報名過同一天
+            const isDuplicate = await checkDuplicateRegistration(currentStudent.id, activityDate);
+            if (isDuplicate) {
+                alert('您已經報名過此日期的活動，請選擇其他日期');
+                return;
+            }
+            
+            try {
+                elements.confirmBtn.innerHTML = '<span class="loading-spinner"></span> 提交中...';
+                elements.confirmBtn.disabled = true;
+                
+                const now = new Date();
+                const registrationTime = firebase.firestore.Timestamp.fromDate(now);
+                
+                await db.collection('報名記錄').add({
+                    學號: currentStudent.id,
+                    班級: `${currentStudent.grade}${currentStudent.class}`,
+                    姓名: currentStudent.name,
+                    實施日期: activityDate,
+                    實施時數: parseInt(activityHours),
+                    類別: activityType,
+                    報名時間: registrationTime,
+                    狀態: '已報名'
+                });
+                
+                elements.confirmBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> 確認提交';
+                elements.confirmBtn.disabled = false;
+                
+                const successAlert = document.createElement('div');
+                successAlert.className = 'alert alert-success alert-dismissible fade show';
+                successAlert.innerHTML = `
+                    <strong>報名成功！</strong> 您的假日銷過已成功報名。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                document.querySelector('.container').prepend(successAlert);
+                
+                registrationData = {
+                    studentId: currentStudent.id,
+                    studentName: currentStudent.name,
+                    studentClass: `${currentStudent.grade}${currentStudent.class}`,
+                    activityDate: activityDate,
+                    activityHours: activityHours,
+                    activityType: activityType,
+                    registrationTime: now.toLocaleString('zh-TW')
+                };
+                
+                resetForm();
+            } catch (error) {
+                console.error("提交報名錯誤:", error);
+                elements.confirmBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> 確認提交';
+                elements.confirmBtn.disabled = false;
+                
+                let errorMessage = '報名失敗，請稍後再試';
+                if (error.code === 'permission-denied') {
+                    errorMessage = '權限不足，無法提交報名';
+                }
+                
+                alert(errorMessage);
+            }
+        }
+
+        // 重置表單
+        function resetForm() {
+            document.getElementById('registrationForm').reset();
+            elements.studentInfoDiv.innerHTML = '';
+            elements.dateInfoDiv.textContent = '';
+            elements.previewSection.style.display = 'none';
+            currentStudent = null;
+        }
+
+        // 檢查日期是否有報名記錄
+        async function checkDateHasRegistrations(date) {
+            try {
+                const snapshot = await db.collection('報名記錄')
+                    .where('實施日期', '==', date)
+                    .get();
+                return !snapshot.empty;
+            } catch (error) {
+                console.error("檢查日期報名記錄錯誤:", error);
+                return false;
+            }
+        }
+
+        // 刪除日期的所有報名記錄
+        async function deleteDateRegistrations(date) {
+            try {
+                const snapshot = await db.collection('報名記錄')
+                    .where('實施日期', '==', date)
+                    .get();
+                
+                const batch = db.batch();
+                snapshot.forEach(doc => {
+                    batch.delete(doc.ref);
+                });
+                
+                await batch.commit();
+                return snapshot.size;
+            } catch (error) {
+                console.error("刪除日期報名記錄錯誤:", error);
+                throw error;
+            }
+        }
+
+        // 處理日期刪除
+        async function handleDateDeletion(dateToDelete, idx) {
+            try {
+                const hasRegistrations = await checkDateHasRegistrations(dateToDelete);
+                
+                if (hasRegistrations) {
+                    const result = await Swal.fire({
+                        title: `日期「${dateToDelete}」已有報名記錄`,
+                        text: "您想要如何處理？",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '刪除日期及報名記錄',
+                        cancelButtonText: '僅刪除日期',
+                        showDenyButton: true,
+                        denyButtonText: '取消',
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6'
+                    });
+                    
+                    if (result.isDenied) {
+                        return; // 用戶取消
+                    }
+                    
+                    if (result.isConfirmed) {
+                        // 刪除日期及相關報名記錄
+                        const deletedCount = await deleteDateRegistrations(dateToDelete);
+                        Swal.fire('刪除完成', `已刪除日期及 ${deletedCount} 筆相關報名記錄`, 'success');
+                    } else {
+                        // 僅刪除日期
+                        Swal.fire('刪除完成', '已刪除日期，保留相關報名記錄', 'success');
+                    }
+                } else {
+                    // 沒有報名記錄，直接刪除
+                    await Swal.fire('刪除完成', '日期已刪除', 'success');
+                }
+                
+                // 從可用日期中移除
+                availableDates.splice(idx, 1);
+                initDateOptions();
+                refreshDateList();
+                
+            } catch (error) {
+                console.error("刪除日期錯誤:", error);
+                Swal.fire('錯誤', '刪除日期時發生錯誤', 'error');
+            }
+        }
+
+        // 刷新日期列表
+        function refreshDateList() {
+            elements.dateList.innerHTML = '';
+            availableDates.sort();
+            availableDates.forEach((date, idx) => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.innerHTML = `
+                    <span>${date}</span>
+                    <button class="btn btn-sm btn-danger" data-index="${idx}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `;
+                elements.dateList.appendChild(li);
+            });
+        }
+
+        // 新增日期
+        async function addNewDate() {
+            const newDate = elements.newDateInput.value;
+            if (!newDate) {
+                Swal.fire('錯誤', '請選擇有效的日期', 'error');
+                return;
+            }
+            if (availableDates.includes(newDate)) {
+                Swal.fire('錯誤', '此日期已存在', 'error');
+                return;
+            }
+            availableDates.push(newDate);
+            initDateOptions();
+            refreshDateList();
+            elements.newDateInput.value = '';
+            Swal.fire('成功', '日期已新增', 'success');
+        }
+
+        // 刪除單筆報名記錄
+        async function deleteRegistration(docId) {
+            if (!confirm('確定要刪除此報名資料嗎？')) return;
+            try {
+                await db.collection('報名記錄').doc(docId).delete();
+                alert('刪除成功');
+                const studentId = elements.queryStudentId.value.trim();
+                const date = elements.queryDate.value;
+                queryRegistrations(date, studentId);  // 重新查詢刷新結果
+            } catch (error) {
+                console.error("刪除失敗", error);
+                alert("刪除失敗，請稍後再試");
+            }
+        }
+
+        // 事件監聽器
+        elements.studentIdInput.addEventListener('blur', async () => {
+            if (elements.studentIdInput.value.trim() !== '') {
+                await checkStudentId(elements.studentIdInput.value.trim());
+            }
+        });
+
+        elements.activityDateSelect.addEventListener('change', async () => {
+            if (elements.activityDateSelect.value !== '') {
+                await checkDateAvailability(elements.activityDateSelect.value);
+            } else {
+                elements.dateInfoDiv.textContent = '';
+            }
+        });
+
+        elements.previewBtn.addEventListener('click', async () => {
+            if (!currentStudent) {
+                alert('請先輸入有效的學號');
+                return;
+            }
+            
+            const activityDate = elements.activityDateSelect.value;
+            const activityHours = document.getElementById('activityHours').value;
+            const activityType = document.getElementById('activityType').value;
+            
+            if (!activityDate || !activityHours || !activityType) {
+                alert('請填寫所有必填欄位');
+                return;
+            }
+            
+            const isAvailable = await checkDateAvailability(activityDate);
+            if (!isAvailable) {
+                alert('此日期已額滿，請選擇其他日期');
+                return;
+            }
+            
+            showPreview();
+        });
+
+        elements.confirmBtn.addEventListener('click', submitRegistration);
+        elements.editBtn.addEventListener('click', () => {
+            elements.previewSection.style.display = 'none';
+        });
+        elements.queryBtn.addEventListener('click', () => {
             const studentId = elements.queryStudentId.value.trim();
             const date = elements.queryDate.value;
-            queryRegistrations(date, studentId);  // 重新查詢刷新結果
-        } catch (error) {
-            console.error("刪除失敗", error);
-            alert("刪除失敗，請稍後再試");
-        }
-    }
-
-    // 重置表單
-    function resetForm() {
-        document.getElementById('registrationForm').reset();
-        elements.studentInfoDiv.innerHTML = '';
-        elements.dateInfoDiv.textContent = '';
-        elements.previewSection.style.display = 'none';
-        currentStudent = null;
-    }
-
-    // 登入相關功能
-    function showLoginModal() {
-        const modal = new bootstrap.Modal(document.getElementById('loginModal'));
-        modal.show();
-    }
-
-    function validateLogin() {
-        const username = document.getElementById('adminUsername').value.trim();
-        const password = document.getElementById('adminPassword').value.trim();
-        const errorDiv = document.getElementById('loginError');
-        
-        if (username === 'admin' && password === '1234') {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-            modal.hide();
-            sessionStorage.setItem('adminLoggedIn', 'true');
-            document.querySelector('#tabAdmin').style.display = '';
-            document.querySelector('#tabStudent').style.display = 'none';
-            document.querySelectorAll('#mainTabs .nav-link').forEach(el => el.classList.remove('active'));
-            document.querySelector('#mainTabs .nav-link[data-target="#tabAdmin"]').classList.add('active');
-            document.getElementById('logoutTab').style.display = 'block';
-            refreshDateList(); // 登入後刷新日期列表
-        } else {
-            errorDiv.style.display = 'block';
-        }
-    }
-
-    function logout() {
-        sessionStorage.removeItem('adminLoggedIn');
-        document.querySelector('#tabAdmin').style.display = 'none';
-        document.querySelector('#tabStudent').style.display = '';
-        document.querySelectorAll('#mainTabs .nav-link').forEach(el => el.classList.remove('active'));
-        document.querySelector('#mainTabs .nav-link[data-target="#tabStudent"]').classList.add('active');
-        document.getElementById('logoutTab').style.display = 'none';
-    }
-
-    // 自動逾時登出：30 秒
-    let logoutTimeout = setTimeout(logout, 30 * 1000);
-    ['click', 'mousemove', 'keypress', 'scroll'].forEach(evt => {
-        document.addEventListener(evt, () => {
-            clearTimeout(logoutTimeout);
-            logoutTimeout = setTimeout(logout, 30 * 1000);
+            
+            if (!date && !studentId) {
+                alert('請至少輸入一個查詢條件（學號或日期）');
+                return;
+            }
+            
+            queryRegistrations(date, studentId);
         });
-    });
+        elements.printListBtn.addEventListener('click', printRegistrationList);
+        elements.addDateBtn.addEventListener('click', addNewDate);
 
-    // 事件監聽器
-    elements.studentIdInput.addEventListener('blur', async () => {
-        if (elements.studentIdInput.value.trim() !== '') {
-            await checkStudentId(elements.studentIdInput.value.trim());
-        }
-    });
-
-    elements.activityDateSelect.addEventListener('change', async () => {
-        if (elements.activityDateSelect.value !== '') {
-            await checkDateAvailability(elements.activityDateSelect.value);
-        } else {
-            elements.dateInfoDiv.textContent = '';
-        }
-    });
-
-    elements.previewBtn.addEventListener('click', async () => {
-        if (!currentStudent) {
-            alert('請先輸入有效的學號');
-            return;
-        }
-        
-        const activityDate = elements.activityDateSelect.value;
-        const activityHours = document.getElementById('activityHours').value;
-        const activityType = document.getElementById('activityType').value;
-        
-        if (!activityDate || !activityHours || !activityType) {
-            alert('請填寫所有必填欄位');
-            return;
-        }
-        
-        const isAvailable = await checkDateAvailability(activityDate);
-        if (!isAvailable) {
-            alert('此日期已額滿，請選擇其他日期');
-            return;
-        }
-        
-        showPreview();
-    });
-
-    elements.confirmBtn.addEventListener('click', submitRegistration);
-    elements.editBtn.addEventListener('click', () => {
-        elements.previewSection.style.display = 'none';
-    });
-    elements.queryBtn.addEventListener('click', () => {
-        const studentId = elements.queryStudentId.value.trim();
-        const date = elements.queryDate.value;
-        
-        if (!date && !studentId) {
-            alert('請至少輸入一個查詢條件（學號或日期）');
-            return;
-        }
-        
-        queryRegistrations(date, studentId);
-    });
-    elements.printListBtn.addEventListener('click', printRegistrationList);
-    elements.addDateBtn.addEventListener('click', addNewDate);
-    
-    elements.dateList.addEventListener('click', (e) => {
-        if (e.target.closest('button')) {
-            const docId = e.target.closest('button').dataset.id;
-            const dateToDelete = e.target.closest('li').querySelector('span').textContent;
-            deleteDate(docId, dateToDelete);
-        }
-    });
-
-    // 標籤切換功能
-    document.addEventListener("DOMContentLoaded", function () {
-        const tabs = document.querySelectorAll("#mainTabs .nav-link");
-        tabs.forEach(tab => {
-            tab.addEventListener("click", function (e) {
-                const target = this.getAttribute("data-target");
-                if (target === "#tabAdmin" && sessionStorage.getItem('adminLoggedIn') !== 'true') {
-                    e.preventDefault();
-                    showLoginModal();
-                    return;
+        // 日期列表點擊事件
+        elements.dateList.addEventListener('click', async (e) => {
+            if (e.target.closest('button')) {
+                const idx = e.target.closest('button').dataset.index;
+                const dateToDelete = availableDates[idx];
+                
+                const confirmResult = await Swal.fire({
+                    title: '確定要刪除此日期嗎？',
+                    text: `您即將刪除日期: ${dateToDelete}`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: '確定刪除',
+                    cancelButtonText: '取消'
+                });
+                
+                if (confirmResult.isConfirmed) {
+                    await handleDateDeletion(dateToDelete, idx);
                 }
-                tabs.forEach(t => t.classList.remove("active"));
-                document.querySelectorAll(".tab-main").forEach(sec => sec.style.display = "none");
-                this.classList.add("active");
-                const section = document.querySelector(target);
-                if (section) section.style.display = "";
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initDateOptions();
+            refreshDateList();
+        });
+    </script>
+
+    <!-- 登入模態框 -->
+    <div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="loginModalLabel">管理員登入</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="adminUsername">帳號</label>
+                        <input class="form-control" id="adminUsername" placeholder="輸入管理員帳號" type="text"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="adminPassword">密碼</label>
+                        <input class="form-control" id="adminPassword" placeholder="輸入密碼" type="password"/>
+                    </div>
+                    <div class="text-danger" id="loginError" style="display: none;">帳號或密碼錯誤</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">取消</button>
+                    <button class="btn btn-primary" onclick="validateLogin()" type="button">登入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoginModal() {
+            const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+            modal.show();
+        }
+
+        function validateLogin() {
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            
+            if (username === 'admin' && password === '1234') {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                modal.hide();
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                document.querySelector('#tabAdmin').style.display = '';
+                document.querySelector('#tabStudent').style.display = 'none';
+                document.querySelectorAll('#mainTabs .nav-link').forEach(el => el.classList.remove('active'));
+                document.querySelector('#mainTabs .nav-link[data-target="#tabAdmin"]').classList.add('active');
+                document.getElementById('logoutTab').style.display = 'block';
+            } else {
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
+            document.querySelector('#tabAdmin').style.display = 'none';
+            document.querySelector('#tabStudent').style.display = '';
+            document.querySelectorAll('#mainTabs .nav-link').forEach(el => el.classList.remove('active'));
+            document.querySelector('#mainTabs .nav-link[data-target="#tabStudent"]').classList.add('active');
+            document.getElementById('logoutTab').style.display = 'none';
+        }
+
+        // 自動逾時登出：30 秒
+        let logoutTimeout = setTimeout(logout, 30 * 1000);
+        ['click', 'mousemove', 'keypress', 'scroll'].forEach(evt => {
+            document.addEventListener(evt, () => {
+                clearTimeout(logoutTimeout);
+                logoutTimeout = setTimeout(logout, 30 * 1000);
             });
         });
 
-        // 初始化日期選項
-        initDateOptions();
+        // 登入後顯示登出按鈕
+        document.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                document.getElementById('logoutTab').style.display = 'block';
+            }
+        });
 
-        // 檢查是否已登入
-        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-            document.getElementById('logoutTab').style.display = 'block';
-        }
-    });
-</script>
+        // 標籤切換功能
+        document.addEventListener("DOMContentLoaded", function () {
+            const tabs = document.querySelectorAll("#mainTabs .nav-link");
+            tabs.forEach(tab => {
+                tab.addEventListener("click", function (e) {
+                    const target = this.getAttribute("data-target");
+                    if (target === "#tabAdmin" && sessionStorage.getItem('adminLoggedIn') !== 'true') {
+                        e.preventDefault();
+                        showLoginModal();
+                        return;
+                    }
+                    tabs.forEach(t => t.classList.remove("active"));
+                    document.querySelectorAll(".tab-main").forEach(sec => sec.style.display = "none");
+                    this.classList.add("active");
+                    const section = document.querySelector(target);
+                    if (section) section.style.display = "";
+                });
+            });
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
