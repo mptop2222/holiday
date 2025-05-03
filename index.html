@@ -112,6 +112,20 @@
             page-break-inside: avoid;
             page-break-after: auto;
         }
+        /* 點名欄位樣式 */
+        .attendance-checkbox {
+            width: 20px;
+            height: 20px;
+            margin: 0 auto;
+            display: block;
+        }
+        /* 點名文字標籤 */
+        .attendance-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
     }
 </style>
 </head>
@@ -216,7 +230,7 @@
 <th>班級</th>
 <th>時數</th>
 <th>類別</th>
-<th>報名時間</th>
+<th>點名</th>
 </tr>
 </thead>
 <tbody id="printListBody"></tbody>
@@ -518,7 +532,7 @@
                                 <th>實施日期</th>
                                 <th>時數</th>
                                 <th>類別</th>
-                                <th>報名時間</th><th>操作</th>
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -550,7 +564,6 @@
                         <td>${data.實施日期 || '未提供'}</td>
                         <td>${data.實施時數 || '0'}小時</td>
                         <td>${data.類別 || '未指定'}</td>
-                        <td>${registrationTime}</td>
                         <td><button class="btn btn-sm btn-danger" onclick="deleteRegistration('${doc.id}')">刪除</button></td>
                     </tr>
                 `;
@@ -639,42 +652,47 @@
 
     // 準備列印名單內容
     function preparePrintListContent() {
-    if (queryResultData.length === 0) {
-        alert('沒有可列印的資料，請先查詢報名記錄');
-        return false;
-    }
-    
-    // 排序資料：先按類別，再按學號
-    const sortedData = [...queryResultData].sort((a, b) => {
-        // 第一排序：類別
-        const typeComparison = a.type.localeCompare(b.type);
-        if (typeComparison !== 0) return typeComparison;
+        if (queryResultData.length === 0) {
+            alert('沒有可列印的資料，請先查詢報名記錄');
+            return false;
+        }
         
-        // 第二排序：學號
-        return a.id.localeCompare(b.id);
-    });
-    
-    elements.printListDate.textContent = elements.queryDate.value || '所有日期';
-    elements.printListTime.textContent = new Date().toLocaleString('zh-TW');
-    elements.printListBody.innerHTML = '';
-    
-    sortedData.forEach((item, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${item.id || '未提供'}</td>
-            <td>${item.name || '未提供'}</td>
-            <td>${item.class || '未提供'}</td>
-            <td>${item.hours || '0'}小時</td>
-            <td>${item.type || '未指定'}</td>
-            <td>${item.time || '未記錄'}</td>
-        `;
-        elements.printListBody.appendChild(row);
-    });
-    
-    elements.printTotalCount.textContent = sortedData.length;
-    return true;
-}
+        // 排序資料：先按類別，再按學號
+        const sortedData = [...queryResultData].sort((a, b) => {
+            // 第一排序：類別
+            const typeComparison = a.type.localeCompare(b.type);
+            if (typeComparison !== 0) return typeComparison;
+            
+            // 第二排序：學號
+            return a.id.localeCompare(b.id);
+        });
+        
+        elements.printListDate.textContent = elements.queryDate.value || '所有日期';
+        elements.printListTime.textContent = new Date().toLocaleString('zh-TW');
+        elements.printListBody.innerHTML = '';
+        
+        sortedData.forEach((item, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${item.id || '未提供'}</td>
+                <td>${item.name || '未提供'}</td>
+                <td>${item.class || '未提供'}</td>
+                <td>${item.hours || '0'}小時</td>
+                <td>${item.type || '未指定'}</td>
+                <td>
+                    <div class="attendance-label">
+                        <input type="checkbox" class="attendance-checkbox"> 到
+                        <input type="checkbox" class="attendance-checkbox"> 未到
+                    </div>
+                </td>
+            `;
+            elements.printListBody.appendChild(row);
+        });
+        
+        elements.printTotalCount.textContent = sortedData.length;
+        return true;
+    }
 
     // 列印報名名單
     function printRegistrationList() {
